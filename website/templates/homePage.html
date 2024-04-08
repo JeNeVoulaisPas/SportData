@@ -1,0 +1,391 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<!-- titre de la fenêtre -->
+		<title>Rugby Data</title>
+
+		<!-- précise l'encodage au navigateur (gestion des accents, ...) -->
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+		<!-- Feuilles de style -->
+		<link rel="stylesheet" type="text/css" href="{% static 'CSS/headerFooter.css' %}">
+		<link rel="stylesheet" type="text/css" href="{% static 'CSS/homePage/homePage.css' %}">
+		<link rel="stylesheet" type="text/css" href="{% static 'CSS/homePage/rank_table.css' %}">
+		<link rel="stylesheet" type="text/css" href="{% static 'CSS/homePage/league_table.css' %}">
+		<link rel="stylesheet" type="text/css" href="{% static 'CSS/slider.css' %}">
+		<link rel="stylesheet" type="text/css" href="{% static 'CSS/homePage/responsiveHomePage.css' %}">
+
+		<!-- Inhibe la grande largeur sur mobile : évite que le mobile présente un écran large et qu'il faille zoomer -->
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=2.0" />
+
+		<!-- icône de la page -->
+		<link rel="icon" href="http://127.0.0.1:8000//static/rugbyBut.ico" type="image/x-icon">
+	
+	</head>
+
+    <body>
+       <!-- Entête -->
+	   <header>
+			<a href="http://127.0.0.1:8000/" class="logoRugby">
+				<img src="{% static 'IMG/logoHeader.png' %}" alt="">
+				<h1> Rugby Data </h1>
+			</a>
+
+			<ul class="menu">
+				<li> <a href="http://127.0.0.1:8000/leagues/"> Leagues </a> </li>
+				<li> <a href="http://127.0.0.1:8000/teams/"> Teams </a> </li>
+				<li> <a href="http://127.0.0.1:8000/matches/"> Matches </a> </li>
+				<li> <a href="http://127.0.0.1:8000/players/"> Players </a> </li>
+			</ul>
+		
+			<button class="button-link-connexion">
+				<a href="#"> Log in </a>
+			</button>
+			
+			<!-- Menu déroulant quand la fenêtre devient petite -->
+			<div class="petit-menu">
+				<span>
+					<div></div>
+					<div></div>
+				</span>
+				<span>
+					<div></div>
+					<div></div>
+				</span>
+			</div>
+		</header>
+
+		<div class="page">
+			<div class="left-column">
+				<table class="content-table-league">
+					<thead>
+					<tr>
+						<th>
+							<img src="{% static 'IMG/trophee.png' %}" alt="">
+							Leagues
+						</th>
+					</tr>
+					</thead>
+					<tbody>
+				
+					<tr>
+						<td>
+							 1
+							<div class="image">
+								<img src="{% static 'IMG/fleche.png' %}" alt="">
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							 2
+							<div class="image">
+								<img src="{% static 'IMG/fleche.png' %}" alt="">
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							 3
+							<div class="image">
+								<img src="{% static 'IMG/fleche.png' %}" alt="">
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							 4
+							<div class="image">
+								<img src="{% static 'IMG/fleche.png' %}" alt="">
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							 5
+							<div class="image">
+								<img src="{% static 'IMG/fleche.png' %}" alt="">
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							 6
+							<div class="image">
+								<img src="{% static 'IMG/fleche.png' %}" alt="">
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							 7
+							<div class="image">
+								<img src="{% static 'IMG/fleche.png' %}" alt="">
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							 8
+							<div class="image">
+								<img src="{% static 'IMG/fleche.png' %}" alt="">
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							 9
+							<div class="image">
+								<img src="{% static 'IMG/fleche.png' %}" alt="">
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							 10
+							<div class="image">
+								<img src="{% static 'IMG/fleche.png' %}" alt="">
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							 11
+							<div class="image">
+								<img src="{% static 'IMG/fleche.png' %}" alt="">
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							 12
+							<div class="image">
+								<img src="{% static 'IMG/fleche.png' %}" alt="">
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							 13
+							<div class="image">
+								<img src="{% static 'IMG/fleche.png' %}" alt="">
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							 14
+							<div class="image">
+								<img src="{% static 'IMG/fleche.png' %}" alt="">
+							</div>
+						</td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="middle-column">
+				{% if num_matches > 0 %}
+					{% for match in upcoming_matches %}
+						<div class="match">
+							<div class="match-header">
+								<img src="{% static 'IMG/joueurRugby.png' %}" alt="">
+								<div class="time">
+									<img src="{% static 'IMG/rugbyBut.png' %}" alt="">
+									{% if today_date == match.date %}
+										Today at
+									{% elif tomorrow_date == match.date %}
+										Tomorrow at
+									{% else %}
+										{{ match.date }} at
+									{% endif %}
+									{{ match.hour|time:"H:i" }} <!--Today 21:00-->
+								</div>
+								<img src="{% static 'IMG/meteo/soleil_0.png' %}" alt="">
+							</div>
+							<div class="match-content">
+								<div class="team1">
+									{{ match.team_home }} <!--Gloucester-->
+									<img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+								</div>
+								<div class="separator-teams">
+									-
+								</div>
+								<div class="team2">
+									<img src="https://www.allrugby.com/img/logo/clubs/90/toulouse2021.png" alt="">
+									{{ match.team_away }} <!--Castres-->
+								</div>
+							</div>
+							<div class="match-competition">
+								<img src="{% static 'IMG/trophee.png' %}" alt="">
+								{{ match.league }} <!--Challenge Cup-->
+							</div>
+							<div class="referee-round">
+								{{ match.phase }}
+								<div class="referee">
+									<img src="{% static 'IMG/sifflet.png' %}" alt="">
+									{{ match.referee }} <!--Thomas Charabas-->
+								</div>
+							</div>
+						</div>
+					{% endfor %}
+				{% else %}
+					<p> Aucun match à afficher pour le moment. </p>
+				{% endif %}
+			</div>
+			<div class="right-column">
+				<div class="slider">
+					<table class="content-table-rank active">
+						<thead>
+							<tr>
+								<!-- colspan="7" : permet d'avoir 1 ligne sur 7 colonnes du tableau -->
+								<th colspan="7">
+									Top 14
+								</th>
+							</tr>
+							<tr>
+								<th>Rank</th>
+								<th>Team</th>
+								<th>P</th>
+								<th>W</th>
+								<th>D</th>
+								<th>L</th>
+								<th>Total</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>1</td>
+								<td>Stade Français</td>
+								<td>20</td>
+								<td>14</td>
+								<td>1</td>
+								<td>5</td>
+								<td>63</td>
+							</tr>
+							<tr class="active-row">
+								<td>2</td>
+								<td>Toulouse</td>
+								<td>20</td>
+								<td>13</td>
+								<td>13</td>
+								<td>0</td>
+								<td>7</td>
+							</tr>
+							<tr>
+								<td>3</td>
+								<td>Racing 92</td>
+								<td>20</td>
+								<td>11</td>
+								<td>11</td>
+								<td>0</td>
+								<td>9</td>
+							</tr>
+							<tr>
+								<td>4</td>
+								<td>Racing 92</td>
+								<td>20</td>
+								<td>11</td>
+								<td>11</td>
+								<td>0</td>
+								<td>9</td>
+							</tr>
+							<tr>
+								<td>5</td>
+								<td>Racing 92</td>
+								<td>20</td>
+								<td>11</td>
+								<td>11</td>
+								<td>0</td>
+								<td>9</td>
+							</tr>
+							<tr>
+								<td>6</td>
+								<td>Racing 92</td>
+								<td>20</td>
+								<td>11</td>
+								<td>11</td>
+								<td>0</td>
+								<td>9</td>
+							</tr>
+						</tbody>
+					</table>
+
+					<table class="content-table-rank">
+						<thead>
+							<th colspan="7">
+								ProD2
+							</th>
+
+							<tr>
+								<th>Rank</th>
+								<th>Team</th>
+								<th>P</th>
+								<th>W</th>
+								<th>D</th>
+								<th>L</th>
+								<th>Total</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>1</td>
+								<td>Stade </td>
+								<td>20</td>
+								<td>14</td>
+								<td>1</td>
+								<td>5</td>
+								<td>63</td>
+							</tr>
+							<tr class="active-row">
+								<td>2</td>
+								<td>Tose</td>
+								<td>20</td>
+								<td>13</td>
+								<td>13</td>
+								<td>0</td>
+								<td>7</td>
+							</tr>
+							<tr>
+								<td>3</td>
+								<td>G</td>
+								<td>20</td>
+								<td>11</td>
+								<td>11</td>
+								<td>0</td>
+								<td>9</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				
+				<div class="container-button">
+					<div class="button-nav left">
+						<img src="{% static 'IMG/homePageRight/flecheGauche.png' %}" alt=""> 
+					</div>
+					<div class="button-nav right"> 
+						<img src="{% static 'IMG/homePageRight/flecheDroite.png' %}" alt=""> 
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<footer>
+			<div class="plan">
+				<li> <a href="http://127.0.0.1:8000/contact-us/"> Contact us </a>  </li>
+				<li> <a href="http://127.0.0.1:8000/image-sources/"> Image sources </a> </li>
+				<li> <a href="http://127.0.0.1:8000/url-sources/"> Scraping sources </a> </li>
+			</div>
+		</footer>
+	</body>
+
+	<!-- Sript pour le petit menu déroulant -->
+	<script src="{% static 'JS/script_menu.js' %}"></script>
+
+	<!-- Script pour le défilement des tableaux -->
+	<script src="{% static 'JS/slider.js' %}"></script>
+
+</html>
+
