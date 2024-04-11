@@ -113,7 +113,7 @@ def get_referee(url: str) -> BeautifulSoup:
                                             
                                             # BDD
                                             find_match = up_match.objects.filter(league = compet, referee = None)
-                                            print("\n", find_match, "\n")
+                                            #print("\n", find_match, "\n")
 
                                             for m in find_match :
 
@@ -122,7 +122,7 @@ def get_referee(url: str) -> BeautifulSoup:
                                                 team_away_ratio = fuzz.ratio(m.team_away.lower(), team_a.lower())
     
                                                 # Si les ratios sont élevés (signifiant une correspondance raisonnable)
-                                                if team_home_ratio > 40 and team_away_ratio > 40:
+                                                if team_home_ratio > 75 and team_away_ratio > 75:
                                                     m.referee = arbitre
                                                     m.save()            
                                                                     
@@ -133,13 +133,4 @@ def get_referee(url: str) -> BeautifulSoup:
                         else :
                             break
         #break # une url pour l'instant  
-                
-
-
-      
-# Récupération des arbitres des matchs à venir
-#get_referee('https://rugbyreferee.net/category/appointments/')
-
-
-
-
+        

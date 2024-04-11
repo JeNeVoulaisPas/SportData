@@ -9,6 +9,7 @@ import csv
 from datetime import datetime
 
 from website.models import up_match
+from website.scraping.meteo import get_weather, associate_weather_code
 
 # Compétitions d'intérêt
 competitions_nom = ["Six Nation", "Premiership", "U20s Six Nation", "Europe Championship", "Top 14", "ProD2", "United Rugby Championship",
@@ -113,7 +114,7 @@ def get_upcoming_matches(url: str) -> BeautifulSoup :
 
                     for match in match_day :
                         time_ = match.find(class_="time").find(class_="state").get_text().split()[0]      # A retenir : nom competition
-                        heure_format24 = datetime.strptime(time_, "%I:%M%p").strftime("%H:%M")
+                        hour_24 = datetime.strptime(time_, "%I:%M%p").strftime("%H:%M")
                         #print(time_)
                         stadium = match.find(class_="time").find(class_="venue").get_text().strip()       # A retenir : nom competition
                         #print(stadium)
@@ -130,18 +131,51 @@ def get_upcoming_matches(url: str) -> BeautifulSoup :
                         round_ = match.find(class_="round").get_text()
                         #print(round_)
                         
-                        new_match = up_match(
-                            status = 'Scheduled',
-                            team_home = team_home1,
-                            team_away = team_away2,
-                            score = None,
-                            referee = None,
-                            date = whole_date,
-                            hour = heure_format24,
-                            stade_name = stadium,
-                            league = name_competition,
-                            phase = round_
-                        )
+                        find_match = up_match.objects.filter(team_home = team_home1, team_away = team_away2, league = name_competition, date = whole_date)
+                        print(find_match)
+                        if not find_match.exists(): 
+                            
+                            weather = get_weather(stadium, whole_date, int(hour_24[:2]))     # On met que les heures
+                            
+                            if weather != None :
+                                path_code = associate_weather_code(weather['weather_code'])
+                                temperature_ = float(weather['temperature_2m'])
+                                humidity_ = float(weather['relative_humidity_2m'])
+                                pressure_ = float(weather['surface_pressure'])
+                                precipitation_ = float(weather['precipitation'])
+                                wind_speed_ = float(weather['wind_speed_10m'])
+                                code_ = float(weather['weather_code'])
+                            else :
+                                path_code = None
+                                temperature_ = None
+                                humidity_ = None
+                                pressure_ = None
+                                precipitation_ = None
+                                wind_speed_ = None
+                                code_ = None
+                                
+                            new_match = up_match(
+                                status = 'Scheduled',
+                                team_home = team_home1,
+                                team_away = team_away2,
+                                score_home = None,
+                                score_away = None,
+                                referee = None,
+                                date = whole_date,
+                                hour = hour_24,
+                                stade_name = stadium,
+                                league = name_competition,
+                                phase = round_,
+                                temperature = temperature_,
+                                humidity = humidity_,
+                                pressure = pressure_,
+                                precipitation = precipitation_,
+                                wind_speed = wind_speed_,
+                                code = code_,
+                                code_url = path_code,
+                                neutrality = None
+                            )
+                            
 
-                        new_match.save()
+                            new_match.save()
                         

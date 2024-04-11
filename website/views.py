@@ -7,11 +7,12 @@ from .models import up_match
 # Importation des fonctions de scraping
 from website.scraping.upcoming_matches import get_upcoming_matches
 from website.scraping.referee import get_referee
+from website.scraping.meteo import get_weather
 
 # Page d'acceuil #
 def homePage(request) :
 
-    get_upcoming_matches("https://www.rugbypass.com/fixtures/")
+    #get_upcoming_matches("https://www.rugbypass.com/fixtures/")
 
     #get_referee('https://rugbyreferee.net/category/appointments/') 
 

@@ -38,9 +38,19 @@
 				<li> <a href="http://127.0.0.1:8000/players/"> Players </a> </li>
 			</ul>
 		
-			<button class="button-link-connexion">
-				<a href="#"> Log in </a>
-			</button>
+			{% if user.is_authenticated %}
+				<button class="button-link-connexion">
+					{{ user.username}} 
+					| 
+					<a href="http://127.0.0.1:8000/accounts/logout/">Log out</a>
+				</button>
+			{% else %}
+				<button class="button-link-connexion">
+					<a href="http://127.0.0.1:8000/accounts/login/"> Log in </a> 
+					| 
+					<a href="#"> Sign up </a>
+				</button>
+			{% endif %}
 			
 			<!-- Menu déroulant quand la fenêtre devient petite -->
 			<div class="petit-menu">
