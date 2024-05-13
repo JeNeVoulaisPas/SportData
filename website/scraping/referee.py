@@ -8,7 +8,7 @@ from website.models import up_match
 from fuzzywuzzy import fuzz
 
 # Nombre d'articles sur la première page à scrappper(Max : 10)
-NB_ARTICLES = 3
+NB_ARTICLES = 1
 
 # Compétitions d'intérêt
 competitions_nom = ["Six Nation", "Premiership", "U20s Six Nation", "Europe Championship", "Top 14", "ProD2", "United Rugby Championship",
@@ -95,10 +95,10 @@ def get_referee(url: str) -> BeautifulSoup:
                                         
                                             # Recherche de la sous-chaine commençant par Referee
                                             ligne_arbitre = p.find(string=lambda text : 'Referee' in text)
-
+                            
                                             # Recherche du nom et prénom
-                                            nom_arbitre_match = re.search(r'Referee: ([^(]+)', ligne_arbitre)
-
+                                            nom_arbitre_match = re.search(r'Referee:(?:&nbsp;)?\s*([^<(]+)', ligne_arbitre)
+                            
                                             if nom_arbitre_match :
                                                 arbitre = nom_arbitre_match.group(1)
                                             else :

@@ -1,4 +1,4 @@
-const div = document.querySelector('.slider'); // Remplacez ".votre-div" par le sélecteur de votre div
+const div = document.querySelector('.slider'); 
 const items = div.querySelectorAll('table');
 const nbSlide = items.length;                           /* Nb d'image qu'on a dans le tableau items */
 const suivant = document.querySelector('.right');

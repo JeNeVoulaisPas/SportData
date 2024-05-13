@@ -10,5 +10,6 @@ urlpatterns = [
     path('players/', views.players, name='players'),
     path('contact-us/', views.contact, name='contact'),
     path('image-sources/', views.imgSources, name='imgSources'),
-    path('url-sources/', views.urlSources, name='urlSources')
+    path('url-sources/', views.urlSources, name='urlSources'),
+    path('match/<slug_match>/', views.presentationMatch, name='presentationMatch'),
 ]

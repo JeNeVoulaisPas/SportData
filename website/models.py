@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.text import slugify
 
 class up_match(models.Model):
     # Choix possibles pour le statut du match.
@@ -27,6 +28,15 @@ class up_match(models.Model):
     code = models.DecimalField(max_digits=15, decimal_places=10, null=True, blank=True)
     code_url = models.CharField(max_length=100, null=True, blank=True)
     neutrality = models.IntegerField(null=True, blank=True)
+    slug = models.SlugField(max_length=600, unique=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+                team_names = f"{self.team_home}-{self.team_away}"
+                date = self.date.replace("/", "-")
+                slug = f"{team_names}-{date}"
+                self.slug = slugify(slug)
+        super().save(*args, **kwargs)
 
 
 class past_match(models.Model) :

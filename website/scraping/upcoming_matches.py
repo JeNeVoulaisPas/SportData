@@ -8,11 +8,12 @@ import time
 import csv
 from datetime import datetime
 
+from fora.models import threads, tchat_match_category
 from website.models import up_match
 from website.scraping.meteo import get_weather, associate_weather_code
 
 # Compétitions d'intérêt
-competitions_nom = ["Six Nation", "Premiership", "U20s Six Nation", "Europe Championship", "Top 14", "ProD2", "United Rugby Championship",
+competitions_nom = ["Six Nations", "Premiership", "U20s Six Nations", "Europe Championship", "Top 14", "ProD2", "United Rugby Championship",
                     "Champions Cup", "Challenge Cup", "U20 Championship", "Rugby World Cup", "The Rugby Championship", "Summer Tour", "Autumn Tour"]
 
 # Expressions régulières permettant de retrouver les compétitions malgré des différences de titre dans les articles
@@ -132,7 +133,7 @@ def get_upcoming_matches(url: str) -> BeautifulSoup :
                         #print(round_)
                         
                         find_match = up_match.objects.filter(team_home = team_home1, team_away = team_away2, league = name_competition, date = whole_date)
-                        print(find_match)
+                        #print(find_match)
                         if not find_match.exists(): 
                             
                             weather = get_weather(stadium, whole_date, int(hour_24[:2]))     # On met que les heures
@@ -176,6 +177,12 @@ def get_upcoming_matches(url: str) -> BeautifulSoup :
                                 neutrality = None
                             )
                             
-
                             new_match.save()
+                            
+                            # Créer un nouveau thread associé au match
+                            cate_match = tchat_match_category.objects.get(title=new_match.league)
+                            new_thread = threads.objects.create(match=new_match, category=cate_match)
+
+                            new_thread.save()
+
                         

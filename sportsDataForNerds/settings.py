@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'website.apps.WebsiteConfig',
     'accounts.apps.AccountsConfig',
-
+    'fora.apps.ForaConfig',
     # For allauth (réseaux sociaux)
     'django.contrib.sites',
     'allauth',
@@ -88,7 +88,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'sportsDataForNerds.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
@@ -145,14 +144,6 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# Plannification du scraping
-CELERY_BEAT_SCHEDULE = {
-    'run-scraping-task-every-week': {
-        'task': 'myapp.tasks.run_get_upcomin_matches',
-        'schedule': timedelta(minutes=5),
-    },
-}
 
 # For allauth (réseaux sociaux)
 AUTHENTICATION_BACKENDS = [

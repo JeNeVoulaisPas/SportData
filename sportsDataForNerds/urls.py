@@ -22,6 +22,7 @@ urlpatterns = [
     path('', include('website.urls')),
     path('accounts/', include('accounts.urls')),
     path('accounts/', include('allauth.urls')),
+    path('fora/', include('fora.urls')),
 ]
 
 

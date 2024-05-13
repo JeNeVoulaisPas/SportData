@@ -70,149 +70,74 @@
 
 		<div class="page">
 			<div class="left-column">
-				<table class="content-table-league">
-					<thead>
-					<tr>
-						<th>
-							<img src="{% static 'IMG/trophee.png' %}" alt="">
-							Leagues
-						</th>
-					</tr>
-					</thead>
-					<tbody>
-				
-					<tr>
-						<td>
-							 1
-							<div class="image">
-								<img src="{% static 'IMG/fleche.png' %}" alt="">
+				<div class="container-grid-cate">   
+					<div class="grid-title">
+						Categories
+					</div>
+					
+					{% for country, categories in categories_by_country.items %}
+						<div class="grid-country">
+							{{ country }}
+							<div class="second-col">
+								<div class="caret"></div>
 							</div>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							 2
-							<div class="image">
-								<img src="{% static 'IMG/fleche.png' %}" alt="">
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							 3
-							<div class="image">
-								<img src="{% static 'IMG/fleche.png' %}" alt="">
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							 4
-							<div class="image">
-								<img src="{% static 'IMG/fleche.png' %}" alt="">
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							 5
-							<div class="image">
-								<img src="{% static 'IMG/fleche.png' %}" alt="">
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							 6
-							<div class="image">
-								<img src="{% static 'IMG/fleche.png' %}" alt="">
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							 7
-							<div class="image">
-								<img src="{% static 'IMG/fleche.png' %}" alt="">
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							 8
-							<div class="image">
-								<img src="{% static 'IMG/fleche.png' %}" alt="">
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							 9
-							<div class="image">
-								<img src="{% static 'IMG/fleche.png' %}" alt="">
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							 10
-							<div class="image">
-								<img src="{% static 'IMG/fleche.png' %}" alt="">
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							 11
-							<div class="image">
-								<img src="{% static 'IMG/fleche.png' %}" alt="">
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							 12
-							<div class="image">
-								<img src="{% static 'IMG/fleche.png' %}" alt="">
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							 13
-							<div class="image">
-								<img src="{% static 'IMG/fleche.png' %}" alt="">
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							 14
-							<div class="image">
-								<img src="{% static 'IMG/fleche.png' %}" alt="">
-							</div>
-						</td>
-					</tr>
-					</tbody>
-				</table>
+						</div>
+						<div class="grid-categories-none" id="{{ country }}">
+							{% for category in categories %}
+								<div class="grid-cate text-check-box">
+									<span class="text-league">{{ category.title }}</span>
+									<input type="checkbox" class="category-checkbox" data-url="{% url 'display_category' slug_category=category.slug_title %}">
+								</div>
+							{% endfor %}
+						</div>
+					{% endfor %}     
+				</div>
 			</div>
+
 			<div class="middle-column">
+			{% for match in upcoming_matches %}
+				<div class="grid-match">
+					<div class="toto">
+						<a href="{% url 'presentationMatch' slug_match=match.slug %}">
+							<img src="{% static 'IMG/rugbyBut.png' %}" alt="">
+							{% if today_date == match.date %}
+								Today
+							{% elif tomorrow_date == match.date %}
+								Tomorrow
+							{% else %}
+								{{ match.date }}
+							{% endif %}
+							{{ match.hour|time:"H:i" }} <!--Today 21:00-->
+						</a>
+					</div>
+
+					<div> Team1 - Team2 </div>
+					<div> Challenge Cup </div>
+				</div>
+			{% endfor %}
+
+
+
+
+
 				{% if num_matches > 0 %}
 					{% for match in upcoming_matches %}
 						<div class="match">
 							<div class="match-header">
-								<img src="{% static 'IMG/joueurRugby.png' %}" alt="">
-								<div class="time">
-									<img src="{% static 'IMG/rugbyBut.png' %}" alt="">
-									{% if today_date == match.date %}
-										Today at
-									{% elif tomorrow_date == match.date %}
-										Tomorrow at
-									{% else %}
-										{{ match.date }} at
-									{% endif %}
-									{{ match.hour|time:"H:i" }} <!--Today 21:00-->
-								</div>
+									<img src="{% static 'IMG/joueurRugby.png' %}" alt="">
+									<div class="time">
+										<a href="{% url 'presentationMatch' slug_match=match.slug %}">
+											<img src="{% static 'IMG/rugbyBut.png' %}" alt="">
+											{% if today_date == match.date %}
+												Today at
+											{% elif tomorrow_date == match.date %}
+												Tomorrow at
+											{% else %}
+												{{ match.date }} at
+											{% endif %}
+											{{ match.hour|time:"H:i" }} <!--Today 21:00-->
+										</a>
+									</div>
 								{% if match.code %}
 									<img src="{{ match.code_url }}" alt="">
 								{% else %}
@@ -221,19 +146,21 @@
 								{% endif %}
 							</div>
 							<div class="match-content">
-								<div class="team1">
-									{{ match.team_home }} <!--Gloucester-->
-									<img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
-								</div>
-								<div class="separator-teams">
-									{% if match.score_home == None and match.score_away == None %}
-										-
-									{% endif %}
-								</div>
-								<div class="team2">
-									<img src="https://www.allrugby.com/img/logo/clubs/90/toulouse2021.png" alt="">
-									{{ match.team_away }} <!--Castres-->
-								</div>
+								<a href="{% url 'presentationMatch' slug_match=match.slug %}">
+									<div class="team1">
+										{{ match.team_home }} <!--Gloucester-->
+										<img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+									</div>
+									<div class="separator-teams">
+										{% if match.score_home == None and match.score_away == None %}
+											-
+										{% endif %}
+									</div>
+									<div class="team2">
+										<img src="https://www.allrugby.com/img/logo/clubs/90/toulouse2021.png" alt="">
+										{{ match.team_away }} <!--Castres-->
+									</div>
+								</a>
 							</div>
 							<div class="match-competition">
 								<img src="{% static 'IMG/trophee.png' %}" alt="">
@@ -403,6 +330,9 @@
 
 	<!-- Script pour le défilement des tableaux -->
 	<script src="{% static 'JS/slider.js' %}"></script>
+
+	<!-- Script pour le défilement des tableaux -->
+	<script src="{% static 'JS/dropDownMenu.js' %}"></script>
 
 </html>
 
